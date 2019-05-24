@@ -1,0 +1,10 @@
+{
+  "listen": 8000,
+  "postgreSql": {
+    "user": "postgres",
+    "host": "localhost",
+    "database": "SampleOne",
+    "password": "a",
+    "port": 3000
+  }
+}
