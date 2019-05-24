@@ -2,7 +2,7 @@ var registrationModel = require('../models/registrationModel.js');
 var rm;
 
 function RegistrationController() {
-   // rm = new registrationModel();
+    rm = new registrationModel();
 }
 
 RegistrationController.prototype.create = function (req, res) {
