@@ -1,10 +1,10 @@
 {
   "listen": 8080,
   "postgreSql": {
-    "user": "postgres",
-    "host": "localhost",
-    "database": "SampleOne",
-    "password": "a",
-    "port": 3000
+    "user": "cdbzenedlomuog",
+    "host": "ec2-54-83-192-245.compute-1.amazonaws.com",
+    "database": "d2j54s1chp5g13",
+    "password": "cd93f3d86953a484c2c60b42e45dbf8cb46472003ab0c9585bad4c88d248b11c",
+    "port": 5432
   }
 }

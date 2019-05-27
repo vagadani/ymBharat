@@ -7,9 +7,9 @@ function RegistrationModel() {
 }
 
 RegistrationModel.prototype.create = function (req, callback) {
-    db.query("INSERT INTO users (name,username,password,email,logintype,fid,mobileno) VALUES" + "(" + "'" + req.body.name + "','" + req.body.username + "','" + req.body.password + "','" + req.body.email + "','" + req.body.logintype + "','" + req.body.fid + "','" + req.body.mobileno + "')", function (err, dbData) {
-        //console.log(err, dbData);
-        callback(err,{message:"Record Inserted successfully"});
+    db.query("INSERT INTO users (name,id,email,logintype,mobileno,fid) VALUES" + "(" + "'" + req.body.name + "','" + req.body.id + "','" + req.body.email + "','" + req.body.logintype + "','" + req.body.mobileno + "','" + req.body.fid + "')", function (err, dbData) {
+        console.log("errrrrrrrrrrrrrrrr:",err, "dataaaaaaaaaaaaaa:",dbData);
+        callback(err,{message:"Record inserted successfully!!!."});
     })
 };
 module.exports = RegistrationModel;
