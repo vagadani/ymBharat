@@ -7,8 +7,15 @@ function RegistrationController() {
 
 RegistrationController.prototype.create = function (req, res) {
     console.log("Data from controller");
+
     rm.create(req, function (error, data) {
-        res.status(200).json(data);
+        if(error){
+            res.status(200).json(error);
+
+        }else {
+            res.status(200).json(data);
+        }
+
     })
 }
 
