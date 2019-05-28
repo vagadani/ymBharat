@@ -105,7 +105,16 @@ RegistrationModel.prototype.sigIn = function (obj, callback) {
 }
 
 RegistrationModel.prototype.signUp = function (obj, callback) {
-    callback(null, {message: "signUp Success"});
+    var self=this;
+    db.query("INSERT INTO users (name,id,email,logintype,mobileno,fid) VALUES" + "(" + "'" + req.body.name + "','" + req.body.id + "','" + req.body.email + "','" + req.body.logintype + "','" + req.body.mobileno + "','" + req.body.fid + "')", function (err, dbData) {
+        if (err){
+            callback(err,null);
+        }else {
+            self.sigIn(obj,callback)
+        }
+        //console.log("errrrrrrrrrrrrrrrr:",err, "dataaaaaaaaaaaaaa:",dbData);
+
+    });
 }
 
 
