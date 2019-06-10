@@ -16,29 +16,56 @@ function RegistrationModel() {
 
 
 RegistrationModel.prototype.create = function (req, callback) {
-    var self = this, userData, updateEmail, updateMobile, updateEmailMobile = 'update users set', updateData;
+    var self = this, userData, updateEmail, updateMobile, updateEmailMobile = 'update users set', updateData, obj;
+    if (req.body&&req.body.login_type&&req.body.login_type.toLowerCase() === 'mobile') {
+        obj = {
+            mobileno: req.body.mobile_number
+        }
+    } else if (req.body&&req.body.login_type&&req.body.login_type.toLowerCase() === 'google') {
+        obj = {
+            id: req.body.id,
+            username: req.body.name,
+            name: req.body.name,
+            email: req.body.email,
+            logintype: req.body.logintype,
+            mobileno: req.body.mobileno,
+            fid: req.body.fid
+        };
 
-    var obj = {
-        id: req.body.id,
-        username: req.body.name,
-        name: req.body.name,
-        email: req.body.email,
-        logintype: req.body.logintype,
-        mobileno: req.body.mobileno,
-        fid: req.body.fid
-    };
+    } else if (req.body&&req.body.login_type&&req.body.login_type.toLowerCase() === 'facebook') {
+        obj = {
+            id: req.body.id,
+            username: req.body.name,
+            name: req.body.name,
+            email: req.body.email,
+            logintype: req.body.logintype,
+            mobileno: req.body.mobileno,
+            fid: req.body.fid
+        };
+    } else {
+        return callback({message: 'something went wrong please Try again later'}, null);
+    }
+    /* var obj = {
+         id: req.body.id,
+         username: req.body.name,
+         name: req.body.name,
+         email: req.body.email,
+         logintype: req.body.logintype,
+         mobileno: req.body.mobileno,
+         fid: req.body.fid
+     };*/
 
     if (obj.fid || obj.gid) {
         db.query("select * from users where fid =" + "'" + obj.fid + "'or gid ='" + obj.gid + "'", function (err, dbData) {
             if (err) {
-                console.log("errrrrrrrrrrrrr")
+                console.log("errrrrrrrrrrrrrAA", err);
                 return callback(err, null);
             } else if (dbData.rows.length > 0) {
                 if (obj.email && (obj.email !== dbData.rows[0].email)) {
                     updateEmailMobile = updateEmailMobile + " email='" + obj.email + "'" + " where gid=" + "'" + obj.gid + "' or fid=" + "'" + obj.fid + "'"
                 }
                 if (obj.mobileno && (obj.mobileno !== dbData.rows[0].mobileno)) {
-                    console.log('mooooooooooooooo')
+                    console.log('mooooooooooooooo');
                     updateEmailMobile = updateEmailMobile + " mobileno='" + obj.mobileno + "'" + " where gid=" + "'" + obj.gid + "' or fid=" + "'" + obj.fid + "'"
                 }
                 if ((obj.email && (obj.email !== dbData.rows[0].email)) && (obj.mobileno && (obj.mobileno !== dbData.rows[0].mobileno))) {
@@ -50,22 +77,26 @@ RegistrationModel.prototype.create = function (req, callback) {
                 } else if ((obj.email !== dbData.rows[0].email) || (obj.mobileno !== dbData.rows[0].mobileno)) {
                     db.query(updateEmailMobile, function (err) {
                         if (err) {
+                            console.log(err)
                             return callback(err, null);
                         }
                     });
+                    return;
                 }
                 console.log('e&m Same');
                 return self.sigIn(obj, callback);
             }
             if (obj.email) {
-                return self.checkEmail(obj, callback)
+                return self.checkEmail(obj, callback);
             }
             if (obj.mobileno) {
-                return self.checkMobile(obj, callback)
+                return self.checkMobile(obj, callback);
             }
         });
+    } else if (obj.mobileno) {
+
     } else {
-        callback({message: 'something went wrong please Try again later'}, null)
+        callback({message: 'something went wrong please Try again later'}, null);
     }
 }
 
@@ -76,12 +107,12 @@ RegistrationModel.prototype.checkEmail = function (obj, cb) {
             console.log('emailerrr');
             cb(err, null);
         } else if (dbData.rows.length > 0) {
-            cb(null, {message: 'you have registered with ' + dbData.rows[0].logintype + '. please login with' + dbData.rows[0].logintype})
+            cb(null, {message: 'you have registered with ' + dbData.rows[0].logintype + '. please login with ' + dbData.rows[0].logintype})
         } else {
             if (obj.mobileno) {
-                self.checkMobile(obj, cb)
+                self.checkMobile(obj, cb);
             } else {
-                self.signUp(obj, cb)
+                self.signUp(obj, cb);
             }
         }
     });
@@ -95,24 +126,24 @@ RegistrationModel.prototype.checkMobile = function (obj, cb) {
         } else if (dbData.rows.length > 0) {
             cb(null, {message: 'you have registered with ' + dbData.rows[0].logintype + '. please login with' + dbData.rows[0].logintype})
         } else {
-            self.signUp(obj, cb)
+            self.signUp(obj, cb);
         }
     });
 }
 
 RegistrationModel.prototype.sigIn = function (obj, callback) {
-    callback(null, {message: "Login Success!"});
+    callback(null, obj);
 }
 
 RegistrationModel.prototype.signUp = function (obj, callback) {
-    var self=this;
-    db.query("INSERT INTO users (name,id,email,logintype,mobileno,fid) VALUES" + "(" + "'" + obj.name + "','" + obj.id + "','" + obj.email + "','" +obj.logintype + "','" + obj.mobileno + "','" + obj.fid + "')", function (err, dbData) {
-        if (err){
-            callback(err,null);
-        }else {
-            self.sigIn(obj,callback)
+    var self = this;
+    db.query("INSERT INTO users (name,id,email,logintype,mobileno,fid) VALUES" + "(" + "'" + obj.name + "','" + obj.id + "','" + obj.email + "','" + obj.logintype + "','" + obj.mobileno + "','" + obj.fid + "')", function (err, dbData) {
+        if (err) {
+            callback(err, null);
+        } else {
+            self.sigIn(obj, callback);
         }
-        //console.log("errrrrrrrrrrrrrrrr:",err, "dataaaaaaaaaaaaaa:",dbData);
+        // console.log("errrrrrrrrrrrrrrrr:",err, "dataaaaaaaaaaaaaa:",dbData);
 
     });
 }

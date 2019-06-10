@@ -1,5 +1,7 @@
 var registrationModel = require('../models/registrationModel.js');
 var rm;
+var jwt = require('jsonwebtoken');
+var config = require('../config/config');
 
 function RegistrationController() {
     rm = new registrationModel();
@@ -7,16 +9,17 @@ function RegistrationController() {
 
 RegistrationController.prototype.create = function (req, res) {
     console.log("Data from controller");
+    var jwtSecretKey = config["jwt-secret-key"];
+    var token;
 
     rm.create(req, function (error, data) {
-        if(error){
+        if (error) {
             res.status(200).json(error);
-
-        }else {
-            res.status(200).json(data);
+        } else {
+            token = jwt.sign(data, jwtSecretKey, {expiresIn: '1h'});
+            res.status(200).json(token);
         }
-
-    })
+    });
 }
 
 

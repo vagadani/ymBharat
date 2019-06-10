@@ -6,5 +6,6 @@
     "database": "d2j54s1chp5g13",
     "password": "cd93f3d86953a484c2c60b42e45dbf8cb46472003ab0c9585bad4c88d248b11c",
     "port": 5432
-  }
+  },
+  "jwt-secret-key": "ymBharat"
 }
