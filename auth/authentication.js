@@ -1,7 +1,5 @@
 var jwt = require('jsonwebtoken');
 var config = require('../config/config.json');
-var CryptoJS = require("crypto-js");
-
 
 var middlewareAuth = function (req, res, next) {
     var encryptedToken = req.headers['x-access-token'];
