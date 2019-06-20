@@ -16,15 +16,10 @@ app.use(function (req, res, next) {
 });
 
 app.use(function (req, res) {
-    /*  res.writeHead(200, {
+      res.writeHead(200, {
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
-      });*/
-
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS, HEAD");
-    res.header("Access-Control-Expose-Headers", "X-TOTAL-COUNT");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization,X-TOTAL-COUNT, X-access-token");
+      });
 
 });
 
