@@ -4,6 +4,13 @@ var app = express();
 var config = require('./config/config.json');
 var portListen = config.listen;
 
+app.use(function (req, res) {
+      res.writeHead(200, {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
+      });
+
+});
 app.use(bodyparser.json());
 app.use(function (req, res, next) {
     console.log(req.url)
@@ -15,13 +22,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-/*app.use(function (req, res) {
-      res.writeHead(200, {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
-      });
 
-});*/
 
 app.use('/v1', require('./routes'));
 app.listen(process.env.PORT || portListen);
