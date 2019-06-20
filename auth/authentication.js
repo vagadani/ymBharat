@@ -12,7 +12,7 @@ var middlewareAuth = function (req, res, next) {
 
         jwt.verify(encryptedToken, jwtSecretKey, function (err, decode) {
             if (err) {
-                res.status(400).json({message: "Invalid Token!"});
+                res.status(401).json({message: "Invalid Token!"});
             } else {
                 console.log(err, decode);
                 req.decodedData = decode;
@@ -20,7 +20,7 @@ var middlewareAuth = function (req, res, next) {
             }
         })
     } else {
-        return res.status(400).json({message: 'No Token Provided!'})
+        return res.status(403).json({message: 'No Token Provided!'})
     }
 }
 
