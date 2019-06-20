@@ -4,15 +4,11 @@ var app = express();
 var config = require('./config/config.json');
 var portListen = config.listen;
 
-app.use(function (req, res) {
-      res.writeHead(200, {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
-      });
 
-});
 app.use(bodyparser.json());
 app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS, HEAD");
     console.log(req.url)
     if (req.url.substr(-1) === '/') {
         return res.send({
